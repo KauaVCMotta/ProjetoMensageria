@@ -1,0 +1,54 @@
+======================================================================
+DOCUMENTAÇÃO: SISTEMA DE COMUNICAÇÃO ASSÍNCRONA ENTRE MICROSSERVIÇOS
+======================================================================
+http://localhost:15672
+1. VISÃO GERAL
+Este projeto implementa a comunicação entre os microsserviços de 
+'Pagamento' e 'Notificação' utilizando o conceito de mensageria 
+assíncrona para garantir escalabilidade e desacoplamento.
+
+2. ARQUITETURA TÉCNICA
+- Broker: Apache RabbitMQ (Rodando via Docker)
+- Linguagem: C# (.NET 8/9)
+- Biblioteca: RabbitMQ.Client (v7.0+)
+- Protocolo: AMQP 0-9-1
+
+3. FLUXO DE COMUNICAÇÃO (EVENT-DRIVEN)
+A comunicação segue o padrão Publish/Subscribe (Pub/Sub):
+
+A. PRODUTOR (PagamentoService):
+   - Realiza a operação crítica de pagamento.
+   - Publica um evento JSON na Exchange "pagamentos_exchange".
+   
+B. EXCHANGE:
+   - Tipo: Fanout (Broadcast).
+   - Função: Recebe a mensagem e a replica para todas as filas conectadas.
+
+C. CONSUMIDOR (NotificacaoService):
+   - Possui uma fila (Queue) vinculada à exchange.
+   - Processa a mensagem de forma assíncrona (AsyncEventingBasicConsumer).
+
+4. CONTRATO DE DADOS (JSON)
+Exemplo de mensagem trafegada entre os serviços:
+{
+  "PedidoId": 1234,
+  "Valor": 250.00,
+  "Status": "Aprovado",
+  "Data": "2025-12-29T00:50:00Z"
+}
+
+5. INFRAESTRUTURA (DOCKER)
+O ambiente é orquestrado via Docker Compose:
+- Imagem: rabbitmq:3-management
+- Porta AMQP: 5672
+- Porta Management UI: 15672
+
+6. BENEFÍCIOS IMPLEMENTADOS
+- Resiliência: Mensagens ficam retidas no broker se o consumidor cair.
+- Desacoplamento: O serviço de pagamento não depende do sucesso do envio 
+  de e-mail para finalizar sua tarefa.
+- Performance: Resposta rápida ao usuário final.
+
+======================================================================
+Criado por: Kauã - Projeto de Microsserviços 2025
+======================================================================
