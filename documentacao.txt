@@ -1,10 +1,9 @@
 ======================================================================
 DOCUMENTAÇÃO: SISTEMA DE COMUNICAÇÃO ASSÍNCRONA ENTRE MICROSSERVIÇOS
 ======================================================================
-http://localhost:15672
 1. VISÃO GERAL
 Este projeto implementa a comunicação entre os microsserviços de 
-'Pagamento' e 'Notificação' utilizando o conceito de mensageria 
+utilizando o conceito de mensageria 
 assíncrona para garantir escalabilidade e desacoplamento.
 
 2. ARQUITETURA TÉCNICA
@@ -12,6 +11,8 @@ assíncrona para garantir escalabilidade e desacoplamento.
 - Linguagem: C# (.NET 8/9)
 - Biblioteca: RabbitMQ.Client (v7.0+)
 - Protocolo: AMQP 0-9-1
+http://localhost:15672
+
 
 3. FLUXO DE COMUNICAÇÃO (EVENT-DRIVEN)
 A comunicação segue o padrão Publish/Subscribe (Pub/Sub):
