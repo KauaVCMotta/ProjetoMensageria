@@ -10,11 +10,9 @@ using var channel = await connection.CreateChannelAsync();
 
 await channel.ExchangeDeclareAsync(exchange: "pagamentos_exchange", type: ExchangeType.Fanout);
 
-// Criamos uma fila temporária exclusiva para este serviço
 var queueDeclareResult = await channel.QueueDeclareAsync();
 var queueName = queueDeclareResult.QueueName;
 
-// Vinculamos a fila à Exchange
 await channel.QueueBindAsync(queue: queueName, exchange: "pagamentos_exchange", routingKey: string.Empty);
 
 Console.WriteLine(" [*] NotificacaoService: Aguardando eventos de pagamento...");
@@ -27,7 +25,6 @@ consumer.ReceivedAsync += async (model, ea) =>
 
     try
     {
-        // Deserialização: JSON -> Objeto C#
         var evento = JsonSerializer.Deserialize<PagamentoCriadoEvent>(json);
 
         if (evento != null)

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using EmailService; // Certifique-se que o namespace no arquivo .cs está correto
+using EmailService; 
 
 var factory = new ConnectionFactory { HostName = "localhost" };
 using var connection = await factory.CreateConnectionAsync();
